@@ -87,5 +87,6 @@ func (api *API) toJSON(v interface{}) string {
 func (api *API) toURL(path string) string {
 	var url bytes.Buffer
 	url.WriteString(api.Host)
+	url.WriteString(path)
 	return url.String()
 }
