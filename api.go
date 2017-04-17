@@ -12,6 +12,9 @@ type API struct {
 	ContentType string
 }
 
+type DummyPayload struct {
+}
+
 func New(host string, contentType string) API {
 	return API{
 		Host:        host,
@@ -20,7 +23,7 @@ func New(host string, contentType string) API {
 }
 
 func (api *API) Get(path string, auth *Auth) (*http.Response, error) {
-	return api.New(http.MethodGet, path, struct{}, auth)
+	return api.New(http.MethodGet, path, DummyPayload{}, auth)
 }
 
 func (api *API) Post(path string, payload interface{}, auth *Auth) (*http.Response, error) {
@@ -39,14 +42,14 @@ func (api *API) Delete(path string, payload interface{}, auth *Auth) (*http.Resp
 	return api.New(http.MethodDelete, path, payload, auth)
 }
 
-func (api *API) New(method string, path string, payload interface{}, auth *Auth) (*http.Response, errpr) {
+func (api *API) New(method string, path string, payload interface{}, auth *Auth) (*http.Response, error) {
 	var response *http.Response
 	var request *http.Request
 	var err error
 
 	data := ""
 	if api.ContentType == ContentTypeJSON {
-		data := api.toJSON(payload)
+		data = api.toJSON(payload)
 	}
 
 	reader := strings.NewReader(data)
