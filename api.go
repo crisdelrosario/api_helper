@@ -1,6 +1,7 @@
 package api
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"net/http"
@@ -54,7 +55,7 @@ func (api *API) New(method string, path string, payload interface{}, auth *Auth)
 
 	reader := strings.NewReader(data)
 
-	if request, err = http.NewRequest(method, path, reader); err != nil {
+	if request, err = http.NewRequest(method, api.toURL(path), reader); err != nil {
 		return response, err
 	}
 
@@ -81,4 +82,10 @@ func (api *API) New(method string, path string, payload interface{}, auth *Auth)
 func (api *API) toJSON(v interface{}) string {
 	data, _ := json.Marshal(v)
 	return string(data)
+}
+
+func (api *API) toURL(path string) string {
+	var url bytes.Buffer
+	url.WriteString(api.Host)
+	return url.String()
 }
