@@ -6,6 +6,8 @@ API Helper
 api.New("http://your-host/path-to-api",api.ContentTypeJSON)
 api.Get("/client",nil)
 
+// With basic authentication
+
 auth := api.SetBasicAuth("user","password")
 api.Get("/client",auth)
 ```
